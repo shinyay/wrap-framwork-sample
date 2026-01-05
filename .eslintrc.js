@@ -11,6 +11,7 @@ module.exports = {
   env: {
     node: true,
     es6: true,
+    jest: true,
   },
   rules: {
     '@typescript-eslint/explicit-function-return-type': 'off',
