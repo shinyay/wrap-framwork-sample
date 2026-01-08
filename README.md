@@ -1,235 +1,183 @@
-# WRAP-Framework-workshop
+# wrap-framwork-sample
 
-⚠️ main branch is intentionally kept blank for workshops.
-All hands-on work should be done on `workshop/*` branches.
+This repository is a **workshop template** for practicing **WRAP (W/R/A/P)** with **GitHub Copilot coding agent**.
 
+The goal is to start from an **almost-empty repository**, then repeatedly run the loop:
 
-This repository is a practical sample of using **WRAP** (W: Write / R: Refine / A: Atomic / P: Pair) to bootstrap and grow a project from an **almost-empty repository** by delegating work to **GitHub Copilot coding agent** through Issues and pull requests.
+**Issue → Copilot PR → human review → merge**, in small, controlled steps.
 
-- **Goal**: Make the workflow reproducible: **Issue → Copilot coding agent PR → review → merge**, repeated in small steps.
-- **Current state of this repo**: A minimal Node.js + TypeScript API skeleton with a `/healthz` endpoint, tests, lint/build/test commands, and repo-level guidance files.
-
----
-
-## 1. What is WRAP?
-
-WRAP is a practical operating pattern for getting high success rates with Copilot coding agent.
-
-- **W — Write effective issues**  
-  Write Issues with requirements, constraints, acceptance criteria, and test plans so the agent can act with minimal ambiguity.
-- **R — Refine your instructions**  
-  Provide repository guidance up front (commands, policies, naming rules, forbidden changes, directory conventions).
-- **A — Atomic tasks**  
-  Split work so **1 Issue ≈ 1 PR** that can be reviewed and merged independently.
-- **P — Pair with the coding agent**  
-  Review the PR, and iterate via PR comments (e.g., `@copilot`) to converge on the desired outcome.
-
-> Tip: When starting from an empty repo, **R first** is especially effective. It reduces guesswork and prevents scope creep in later PRs.
+> **Workshop operating policy**  
+> - The `main` branch is intentionally kept as a **blank workshop baseline** (mainly `.github/**` + `README.md`).  
+> - All hands-on work happens on dated branches like `workshop/YYYY-MM-DD[-suffix]`.  
+> - Keep a reference implementation on a separate branch such as `solution` (optional).
 
 ---
 
-## 2. Run the current project
+## What you can do with this repo
 
-### Prerequisites
-- Node.js >= 18
-- npm
-
-### Quick Start
-
-#### Install
-```bash
-npm ci
-```
-
-#### Build
-```bash
-npm run build
-```
-
-#### Test
-```bash
-npm test
-```
-
-#### Run
-```bash
-npm run dev
-```
-
-Default URL: `http://localhost:3000`
-
-Change port:
-```bash
-PORT=8080 npm run dev
-```
-
-#### Health check
-```bash
-curl http://localhost:3000/healthz
-```
-
-Expected:
-```json
-{"status":"ok"}
-```
-
-### Common scripts
-- `npm run dev` — start dev server
-- `npm run build` — compile TypeScript
-- `npm test` — run Jest tests
-- `npm run lint` — run ESLint
+- Learn WRAP: meaning, value, and how to apply it with Copilot coding agent
+- Create a workshop branch (e.g., `workshop/2026-01-08`) from an Issue (Actions automation)
+- Start with **R-first (Pattern A)** to reduce ambiguity and improve later agent results
+- Keep work reviewable by enforcing **Atomic tasks** (1 Issue ≈ 1 PR)
+- Pair with the agent in PRs: iterate via reviews and `@copilot`, and feed recurring feedback back into R
 
 ---
 
-## 3. From an empty repo to the current state (step-by-step WRAP)
+## What is WRAP?
 
-This section explains **how to reproduce** the path from “nearly empty repository” to a working baseline using WRAP and Copilot coding agent.
+WRAP is a practical operating pattern for getting reliable, reviewable outputs from Copilot coding agent.
 
-### 3.0 Create an empty repository
+### W — Write effective issues
+For Copilot, an Issue is the “work order.”  
+Ambiguous Issues produce ambiguous PRs. W is about removing ambiguity.
 
-1. Create a new GitHub repository (empty is fine).
-2. (Recommended) Add only the minimum scaffolding manually:
-   - `.github/ISSUE_TEMPLATE/` (Issue Forms)
-   - `LICENSE`
-   - `README.md` (this file)
-
-> At this stage, you do **not** need application code yet.  
-> First, make **W** and **R** possible.
-
----
-
-### 3.1 W (Write): add an Issue Form for Copilot-ready tasks
-
-The first “W” move for an empty repo is to introduce an **Issue Form** that enforces the structure Copilot needs.
-
-#### 3.1.1 Add the Ultra-detailed Issue Form (manual commit recommended)
-Create:
-- `.github/ISSUE_TEMPLATE/config.yml` (optional, to prevent blank issues)
-- `.github/ISSUE_TEMPLATE/copilot-task.yml` (the Ultra-detailed Issue Form)
-
-This repo started by committing these templates early.
-
-#### 3.1.2 Why this matters
-The form forces you to include the most important fields for agent success, such as:
+This repo’s Issue Forms emphasize:
 - **Change surface** (what to touch / avoid)
-- **Edge cases / failure modes**
 - **Acceptance criteria** (verifiable)
-- **Test plan** (commands + manual steps)
+- **Test plan** (commands + steps)
+- **Edge cases / failure modes** (pitfalls up front)
 
-> Don’t try to perfect the form on day one.  
-> Use it for 1–2 iterations, then refine it through additional atomic Issues.
+### R — Refine your instructions
+R defines shared repo guidance for both the agent and human reviewers:
+- Standard commands (build/test/lint/run)
+- Guardrails (no secrets, no unrelated refactors, minimal deps)
+- Directory conventions and ownership boundaries
+- PR expectations (summary, how to test, risks/assumptions)
 
----
+For workshops starting from empty repos, **Pattern A (first PR is R-only)** is the most stable.
 
-### 3.2 R (Refine): create repository guidance first (Pattern A)
-
-When starting from an empty repo, the most stable approach is:
-
-**Pattern A: your first PR should add only “R” artifacts**.
-
-#### 3.2.1 Minimum R artifacts
-- `.github/copilot-instructions.md`  
-  Repository-wide Copilot guidance (commands, structure, quality rules, forbidden changes)
-- `AGENTS.md`  
-  Agent runbook (atomic scope, “no unrelated changes,” dependency policy, PR description expectations)
-
-> Once these exist, future Issues do not need to repeat the same rules.
-
-#### 3.2.2 Create the R Issue (example title)
-- `[repo] refine: add baseline Copilot instructions and agent rules`
-
-In the Issue, specify at least:
-- “Standard commands” (install/lint/test/build/run — allow TBD if stack isn’t finalized)
+### A — Atomic tasks
+A is the splitting strategy:
 - 1 Issue = 1 PR
-- Dependency additions must be minimal and justified
-- What must not be touched (generated artifacts, secrets, license text, etc.)
-- PR acceptance conditions (e.g., lint/test pass if available)
+- One PR should be reviewable and independently mergeable
+- Don’t mix design exploration and implementation in a single PR
+
+### P — Pair with the coding agent
+Treat agent PRs as drafts and complete them through review:
+- Review the PR and give concrete, actionable feedback
+- Use PR comments with `@copilot` to request fixes
+- If the same feedback repeats, update **R** to prevent recurrence
 
 ---
 
-### 3.3 P (Pair): assign the Issue to Copilot, review the PR, iterate on the PR
+## What this repo provides
 
-#### 3.3.1 Issue → PR
-1. Create an Issue (using the Ultra-detailed Issue Form).
-2. Ensure required fields are complete **before assigning** it to Copilot.
-3. Assign the Issue to **Copilot coding agent**, which will open a draft PR.
+### 1) Issue Forms (to support W and R)
+Under `.github/ISSUE_TEMPLATE/`, you can include forms such as:
+- **Copilot Task (Ultra-detailed)** — general implementation tasks
+- **WRAP R Task (R-only)** — instructions/setup changes
+- **Atomic R forms (optional)** — instructions-only / AGENTS-only / setup-steps-only
+- **Workshop: Create a dated branch** — create `workshop/YYYY-MM-DD` via an Issue
 
-**Important operational rule**:
-- Changes to requirements after assignment should be communicated in the **PR discussion**, not by adding new Issue comments.
+> Note: Branch creation is always a **copy of the base ref**.  
+> If you want a “blank workshop branch,” the base ref (typically `main`) must already be blank (this README’s policy),  
+> or you must use a “create-and-blank” workflow variant that adds a blanking commit.
 
-#### 3.3.2 Human review
-When the PR arrives:
-- Confirm the PR matches the Issue’s acceptance criteria
-- Run the standard commands locally (e.g., `npm ci`, `npm test`, `npm run lint`)
-- Look for unexpected scope (unrelated files, large dependency changes, etc.)
-
-#### 3.3.3 Iterate with `@copilot`
-- Use PR comments with `@copilot` and write clear, actionable steps.
-- Prefer a single consolidated review comment (bullet list) over many small messages.
-
----
-
-### 3.4 A (Atomic): split “new app creation” into reviewable steps
-
-After R is in place, start building the project with **small, independent Issues**.
-
-A typical split for bootstrapping a new app (stack-agnostic):
-
-1. **Scaffold**
-   - Minimal project skeleton (language/framework baseline)
-2. **Build & Test**
-   - build/test/lint commands exist and can run in CI
-3. **Hello/Health**
-   - a minimal endpoint (e.g., `/healthz`) to prove the app is alive
-4. **Docs**
-   - README with commands, rules, and review practices
-5. **Hardening**
-   - error handling, logging, security policies, dependency hygiene
-
-> Avoid stuffing everything into a single Issue.  
-> Atomic steps are the key to predictable PRs.
+### 2) GitHub Actions (workshop automation)
+Under `.github/workflows/`, you can keep:
+- Issue → dated branch creation workflow
+- (Optional) reset-to-blank workflow (creates a PR that deletes everything except `.github/**` + `README.md`)
+- (Later) `copilot-setup-steps.yml` (created as part of the R-first exercise)
 
 ---
 
-## 4. This repo’s timeline (example)
+## Workshop flow (from blank baseline to a working project)
 
-This repository followed the WRAP loop to reach the current state:
+This section is the core operating procedure.
 
-### 4.1 Initial (W baseline)
-- Added the Ultra-detailed Issue Form under `.github/ISSUE_TEMPLATE/`
+### Step 0 — Create a workshop branch (Issue → Actions)
+1. Open a GitHub Issue
+   - Template: **Workshop: Create a dated branch**
+2. Enter a date (YYYY-MM-DD) and a base ref
+   - Typically `base_ref=main` (blank baseline)
+3. Actions runs and comments back with:
+   - branch name
+   - checkout commands
+4. Checkout locally:
 
-### 4.2 PR #2 (R + Scaffold)
-- Copilot added a Node.js + TypeScript API skeleton
-- Added `.github/copilot-instructions.md` as repo guidance
+```bash
+git fetch origin workshop/2026-01-08
+git checkout workshop/2026-01-08
+```
 
-Reference:
-- PR #2: https://github.com/shinyay/wrap-framwork-sample/pull/2
+### Step 1 — First PR is R-only (Pattern A)
+**Goal**: lock down guidance and guardrails before doing any app work.
 
-### 4.3 PR #4 (R refinement)
-- Added `AGENTS.md` for agent operating rules
+1. Create an Issue (template: **WRAP R Task**)
+2. Specify the deliverables, e.g.:
+   - `.github/copilot-instructions.md`
+   - `AGENTS.md`
+   - `.github/workflows/copilot-setup-steps.yml`
+3. Assign the Issue to Copilot coding agent (it opens a PR)
+4. Review and merge (reject out-of-scope changes)
 
-Reference:
-- PR #4: https://github.com/shinyay/wrap-framwork-sample/pull/4
+**R-PR review checklist**
+- Only R artifacts are touched (minimal diff)
+- “TBD” policy is explicit (no silent tech choices)
+- Non-negotiables and PR expectations are documented
+
+### Step 2 — Implement with atomic Issues (A)
+Once R is in place, start implementation — but split it.
+
+Suggested stack-agnostic backlog:
+1. **Stack decision** (choose language/framework)
+2. **Scaffold** (minimal project skeleton)
+3. **Build/Test/Lint** (standard commands exist)
+4. **Hello/Health** (a minimal “it runs” endpoint)
+5. **CI** (lint/test/build on PR)
+6. **Docs** (README and operating procedures)
+
+### Step 3 — Pair in PRs (P)
+- Consolidate feedback in PR reviews (bullet list)
+- Use `@copilot` to request changes
+- If feedback repeats, update R to prevent recurrence
 
 ---
 
-## 5. Suggested next atomic Issues
+## Workshop modules you can run (menu)
 
-After the baseline is in place, keep moving with atomic Issues such as:
-- `[ci] add: lint/test workflow`
-- `[repo] refine: copilot-setup-steps workflow` (optional)
-- `[docs] add: contribution & review guidelines`
-- `[quality] add: coverage thresholds / test isolation rules`
-- `[security] add: dependency audit policy`
+Pick modules based on your audience and goals.
+
+### Module 1: WRAP fundamentals
+- WRAP meaning and roles (Issue as the prompt)
+- Writing effective Issues (change surface, acceptance criteria, test plan)
+- PR pairing practices (`@copilot` in PR discussions)
+
+### Module 2: R-first bootstrap (first PR is R-only)
+- Create/refine `.github/copilot-instructions.md`
+- Create/refine `AGENTS.md`
+- Create `copilot-setup-steps.yml` so future agent sessions are more reliable
+
+### Module 3: Atomic implementation loop
+- Scaffold → build/test → health endpoint
+- Test strategy (minimum unit/integration)
+- Dependency policy and justification in PRs
+
+### Module 4: Quality and operations
+- Add CI workflows (lint/test/build)
+- Security and secrets handling
+- Convert repeating review comments into R updates
 
 ---
 
-## 6. R artifacts in this repo
+## Troubleshooting
 
-- `.github/copilot-instructions.md`  
-  Repository-wide Copilot guidance (commands, structure, expectations)
-- `AGENTS.md`  
-  Agent operating rules (atomic tasks, boundaries, PR template)
+### Q. The workshop branch is not blank
+A. Branch creation is a **copy of the base ref**. If `base_ref=main`, then `main` must be the blank baseline.  
+Alternative: use a “create-and-blank” workflow variant that adds a blanking commit.
+
+### Q. I updated the Issue but the agent behavior didn’t change
+A. In practice, treat the Issue body at assignment time as the input. Send changes via PR comments and reviews.
+
+### Q. The workflow fails with permission errors
+A. Check workflow `permissions:` and the repository/organization Actions settings.  
+For safety, restrict branch creation to users with `write/maintain/admin`.
+
+---
+
+## Optional: reference implementation (`solution` branch)
+If you keep a “finished example,” store it on a separate branch like `solution`.  
+See that branch’s README for run instructions.
 
 ---
 
